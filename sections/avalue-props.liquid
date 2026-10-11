@@ -1,0 +1,568 @@
+{% comment %}
+  Ultra-Modern SaaS & Luxury Value Propositions (Floating Glass Grid - Mobile Centered & Extra Wide Gap + Scroll Reveal)
+{% endcomment %}
+
+<section class="value-props-section" id="ValueProps-{{ section.id }}">
+  <div class="vp-container">
+    
+    {% if section.settings.title != blank or section.settings.subheading != blank %}
+      <div class="vp-header vp-reveal-header">
+        {% if section.settings.subheading != blank %}
+          <span class="vp-subheading">{{ section.settings.subheading }}</span>
+        {% endif %}
+        {% if section.settings.title != blank %}
+          <h2 class="vp-title">{{ section.settings.title }}</h2>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="vp-grid">
+      {% for block in section.blocks %}
+        <div class="vp-card vp-reveal-card" {{ block.shopify_attributes }}>
+          <div class="vp-card-top">
+            <span class="vp-index">0{{ forloop.index }}</span>
+            <div class="vp-icon-wrapper">
+              {% case block.settings.icon %}
+                {% when 'shipping' %}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="3" width="15" height="13" rx="2"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                  </svg>
+                {% when 'package' %}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                  </svg>
+                {% when 'shield' %}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  </svg>
+                {% when 'support' %}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17L2.5 21.5L7 20.6622C8.47087 21.513 10.1786 22 12 22Z"></path>
+                  </svg>
+                {% else %}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+              {% endcase %}
+            </div>
+          </div>
+
+          <div class="vp-content">
+            <h3 class="vp-card-title">
+              {{ block.settings.title }}
+              <span class="vp-title-line"></span>
+            </h3>
+            <p class="vp-card-text">{{ block.settings.text }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* --- HERO TARZI AKICI GİRİŞ VE SIRALI (STAGGERED) ANİMASYONLAR --- */
+  @keyframes vpHeaderSlide {
+    0% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes vpCardSlideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .value-props-section.is-in-view .vp-reveal-header {
+    animation: vpHeaderSlide 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .value-props-section.is-in-view .vp-reveal-card {
+    animation: vpCardSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+
+  /* Kartların peş peşe yağ gibi akması için gecikmeler (staggered delay) */
+  .value-props-section.is-in-view .vp-reveal-card:nth-child(1) { animation-delay: 0.1s; }
+  .value-props-section.is-in-view .vp-reveal-card:nth-child(2) { animation-delay: 0.22s; }
+  .value-props-section.is-in-view .vp-reveal-card:nth-child(3) { animation-delay: 0.34s; }
+  .value-props-section.is-in-view .vp-reveal-card:nth-child(4) { animation-delay: 0.46s; }
+
+  .vp-reveal-header,
+  .vp-reveal-card {
+    opacity: 0;
+  }
+
+  #ValueProps-{{ section.id }},
+  #ValueProps-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  #ValueProps-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 2rem {{ section.settings.padding_bottom }}px;
+    position: relative;
+    z-index: 13;
+    overflow: hidden !important;
+  }
+
+  .vp-container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  .vp-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .vp-subheading {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: {{ section.settings.subheading_color }};
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .vp-title {
+    font-size: 2.2rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: {{ section.settings.title_color }};
+    margin: 0;
+  }
+
+  .vp-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: {{ section.settings.grid_gap }}px;
+  }
+
+  /* FLOATING GLASS CARDS */
+  .vp-card {
+    background: {{ section.settings.card_bg_color }};
+    border: 1px solid {{ section.settings.card_border_color }};
+    border-radius: {{ section.settings.card_border_radius }}px;
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 240px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .vp-card:hover {
+    transform: translateY(-8px);
+    border-color: {{ section.settings.card_hover_border_color }};
+    box-shadow: 0 20px 40px -15px rgba(229, 9, 20, 0.15);
+  }
+
+  .vp-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .vp-index {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: {{ section.settings.subheading_color }};
+    opacity: 0.5;
+  }
+
+  .vp-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: {{ section.settings.icon_bg_color }};
+    color: {{ section.settings.icon_color }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, color 0.3s ease;
+  }
+
+  .vp-card:hover .vp-icon-wrapper {
+    transform: scale(1.1) rotate(-4deg);
+    background: {{ section.settings.icon_hover_bg_color }};
+    color: {{ section.settings.icon_hover_color }};
+  }
+
+  .vp-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .vp-card-title {
+    font-size: 1.15rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    color: {{ section.settings.card_title_color }};
+    margin: 0;
+    position: relative;
+    display: inline-block;
+  }
+
+  .vp-card-text {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: {{ section.settings.card_text_color }};
+    margin: 0;
+    font-weight: 400;
+  }
+
+  /* RESPONSIVE LAYOUT & MOBİL EKSTRA FERAH ARALIKLAR */
+  @media (max-width: 1024px) {
+    .vp-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  }
+
+  @media (max-width: 600px) {
+    #ValueProps-{{ section.id }} { 
+      padding: 60px 1.25rem; 
+    }
+    
+    .vp-header {
+      margin-bottom: 45px;
+    }
+
+    .vp-title {
+      font-size: 1.8rem;
+    }
+
+    .vp-grid { 
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr); 
+      gap: 36px; 
+    }
+
+    .vp-card { 
+      padding: 36px 24px; 
+      min-height: auto; 
+      align-items: center;
+      text-align: center;
+    }
+
+    .vp-card-top {
+      flex-direction: column-reverse;
+      gap: 14px;
+      margin-bottom: 28px;
+      align-items: center;
+    }
+
+    .vp-content {
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+    }
+
+    .vp-card-title {
+      font-size: 1.15rem;
+    }
+
+    .vp-card-text {
+      font-size: 0.88rem;
+      line-height: 1.65;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const sectionId = '{{ section.id }}';
+    document.addEventListener('DOMContentLoaded', () => {
+      const sectionEl = document.getElementById(`ValueProps-${sectionId}`);
+      if (!sectionEl) return;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            sectionEl.classList.add('is-in-view');
+            observer.unobserve(sectionEl);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      observer.observe(sectionEl);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Value Propositions",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Layout & Padding"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 140,
+      "step": 10,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 140,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Headings (English)"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "EXCLUSIVITY & SERVICES"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#888888"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Main Title",
+      "default": "Why Choose Us"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Main Title Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Card Styling & Colors"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "default": "#141414"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "rgba(255, 255, 255, 0.08)"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_border_color",
+      "label": "Card Hover Border Color",
+      "default": "#e50914"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card Title Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card Text Color",
+      "default": "#a3a3a3"
+    },
+    {
+      "type": "header",
+      "content": "Icon Styling"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Icon Background Color",
+      "default": "#1f1f1f"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "icon_hover_bg_color",
+      "label": "Icon Hover Background Color",
+      "default": "#e50914"
+    },
+    {
+      "type": "color",
+      "id": "icon_hover_color",
+      "label": "Icon Hover Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Grid Settings"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Desktop Columns",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile Columns",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 12,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Grid Gap",
+      "default": 24
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Select Icon",
+          "options": [
+            { "value": "shipping", "label": "Shipping / Delivery" },
+            { "value": "package", "label": "Custom Packaging" },
+            { "value": "shield", "label": "Security / Guarantee" },
+            { "value": "support", "label": "Support / Concierge" },
+            { "value": "star", "label": "Star / Quality" }
+          ],
+          "default": "shipping"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "default": "Express Shipping"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Card Description",
+          "default": "Global insured delivery network with real-time tracking."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Value Propositions",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "shipping",
+            "title": "Insured Express Shipping",
+            "text": "Worldwide insured express delivery on all orders with real-time tracking."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "package",
+            "title": "Signature Packaging",
+            "text": "Delivered in our bespoke luxury gift boxes with custom personalized cards."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "shield",
+            "title": "100% Authenticity Guaranteed",
+            "text": "Formulated and crafted with certified premium ingredients and rigorous quality control."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "support",
+            "title": "Concierge Support",
+            "text": "Dedicated 24/7 customer care team ready to assist with tailored consultations."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

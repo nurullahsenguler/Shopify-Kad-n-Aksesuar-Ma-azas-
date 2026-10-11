@@ -1,0 +1,170 @@
+{% comment %}
+  Luxury Dark Accessories 404 Error Page
+{% endcomment %}
+
+<section class="error-404-section" id="Error404-{{ section.id }}">
+  <div class="error-404-container">
+    <div class="error-404-card">
+      <span class="error-code">404</span>
+      <h1 class="error-title">{{ section.settings.title }}</h1>
+      <p class="error-text">{{ section.settings.subtext }}</p>
+      
+      <div class="error-actions">
+        <a href="{{ section.settings.btn_link | default: routes.root_url }}" class="btn-primary">
+          {{ section.settings.btn_text }}
+        </a>
+        <a href="/collections/all" class="btn-secondary">
+          Browse All Collections
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #Error404-{{ section.id }},
+  #Error404-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .error-404-section {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    padding: 120px 24px 100px; /* Navbar altı ferahlık */
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  .error-404-container {
+    max-width: 680px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .error-404-card {
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 40px;
+    padding: 60px 40px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .error-code {
+    display: block;
+    font-size: clamp(80px, 12vw, 130px);
+    font-weight: 200;
+    line-height: 1;
+    color: #e50914;
+    letter-spacing: -2px;
+    margin-bottom: 10px;
+    text-shadow: 0 10px 30px rgba(229, 9, 20, 0.2);
+  }
+
+  .error-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 300;
+    margin: 0 0 16px 0;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+  }
+
+  .error-text {
+    font-size: 1.05rem;
+    color: #a3a3a3;
+    line-height: 1.6;
+    margin: 0 0 36px 0;
+    font-weight: 300;
+  }
+
+  .error-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 16px 36px;
+    background: #e50914;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+  }
+
+  .btn-primary:hover {
+    background: #ffffff;
+    color: #0a0a0a;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 16px 36px;
+    background: #0a0a0a;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    text-decoration: none;
+    border-radius: 100px;
+    font-weight: 500;
+    font-size: 0.88rem;
+    letter-spacing: 1px;
+    transition: all 0.4s ease;
+  }
+
+  .btn-secondary:hover {
+    border-color: #e50914;
+    color: #e50914;
+    transform: translateY(-3px);
+  }
+
+  @media (max-width: 600px) {
+    .error-404-section { padding: 100px 16px 60px; }
+    .error-404-card { padding: 40px 20px; border-radius: 28px; }
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Luxury 404 Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Lost in Elegance"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Description",
+      "default": "The piece or page you are looking for does not exist or has been moved to a new collection."
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Primary Button Label",
+      "default": "RETURN HOME"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Primary Button Link"
+    }
+  ]
+}
+{% endschema %}

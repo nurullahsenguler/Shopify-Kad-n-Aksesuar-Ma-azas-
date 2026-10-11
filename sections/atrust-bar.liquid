@@ -1,0 +1,208 @@
+{% comment %}
+  Custom Marquee Ticker Section - Reusable Block Component
+  Can be added to any page with dynamic blocks.
+{% endcomment %}
+
+<div class="custom-marquee-wrapper" id="Marquee-{{ section.id }}">
+  <div class="marquee-content">
+    <div class="marquee-track">
+      {% for i in (1..2) %}
+        <div class="marquee-group">
+          {% for block in section.blocks %}
+            <div class="marquee-item" {{ block.shopify_attributes }}>
+              {% if block.settings.icon != blank %}
+                <span class="marquee-icon">{{ block.settings.icon }}</span>
+              {% endif %}
+              <span class="marquee-text">{{ block.settings.text }}</span>
+              <span class="marquee-separator">•</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+  #Marquee-{{ section.id }} {
+    width: 100%;
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding: {{ section.settings.padding_vertical }}px 0;
+    overflow: hidden;
+    border-top: 1px solid {{ section.settings.border_color }};
+    border-bottom: 1px solid {{ section.settings.border_color }};
+  }
+
+  .marquee-content {
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .marquee-track {
+    display: flex;
+    flex-shrink: 0;
+    min-width: 100%;
+    animation: marqueeScroll {{ section.settings.speed }}s linear infinite;
+  }
+
+  #Marquee-{{ section.id }}:hover .marquee-track {
+    {% if section.settings.pause_on_hover %}
+      animation-play-state: paused;
+    {% endif %}
+  }
+
+  .marquee-group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0 1.5rem;
+    font-size: {{ section.settings.font_size }}px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .marquee-icon {
+    display: inline-flex;
+  }
+
+  .marquee-separator {
+    margin-left: 1.5rem;
+    opacity: 0.4;
+  }
+
+  @keyframes marqueeScroll {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom Marquee Ticker",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll Speed",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical Padding",
+      "default": 14
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on Hover",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ticker_item",
+      "name": "Ticker Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Secure Checkout"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon/Emoji (Optional)",
+          "default": "🔒"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Bar",
+      "blocks": [
+        {
+          "type": "ticker_item",
+          "settings": {
+            "text": "Secure Checkout",
+            "icon": "🔒"
+          }
+        },
+        {
+          "type": "ticker_item",
+          "settings": {
+            "text": "4.8★ Rated by Customers",
+            "icon": "⭐"
+          }
+        },
+        {
+          "type": "ticker_item",
+          "settings": {
+            "text": "Free Worldwide Shipping",
+            "icon": "✈️"
+          }
+        },
+        {
+          "type": "ticker_item",
+          "settings": {
+            "text": "14 Days Easy Returns",
+            "icon": "🔄"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

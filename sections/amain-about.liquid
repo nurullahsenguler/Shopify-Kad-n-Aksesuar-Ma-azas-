@@ -1,0 +1,640 @@
+{% comment %}
+  Luxury Dark Jewelry/Accessory About Us Page
+  Readapted layout: Hero -> Glass Stats Bar -> Core Values -> Story Rows -> CTA Banner
+{% endcomment %}
+
+<section class="about-wrapper" id="About-{{ section.id }}">
+  <div class="about-container">
+    
+    <!-- 1. HERO SECTION -->
+    <div class="about-hero">
+      <div class="hero-content">
+        <span class="about-subheading">{{ section.settings.hero_subheading }}</span>
+        <h1>{{ section.settings.hero_title }}</h1>
+        <p>{{ section.settings.hero_text }}</p>
+      </div>
+      <div class="hero-image">
+        {% if section.settings.hero_image != blank %}
+          <img src="{{ section.settings.hero_image | image_url: width: 1000 }}" alt="{{ section.settings.hero_title | escape }}" loading="lazy" width="1000" height="1000">
+        {% else %}
+          <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1000" alt="Luxury Accessories Hero" loading="lazy" width="1000" height="1000">
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- 2. STATS BAR (GLASSMORPHISM) -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <h2>{{ section.settings.stat_1_num }}</h2>
+        <span>{{ section.settings.stat_1_label }}</span>
+      </div>
+      <div class="stat-item">
+        <h2>{{ section.settings.stat_2_num }}</h2>
+        <span>{{ section.settings.stat_2_label }}</span>
+      </div>
+      <div class="stat-item">
+        <h2>{{ section.settings.stat_3_num }}</h2>
+        <span>{{ section.settings.stat_3_label }}</span>
+      </div>
+      <div class="stat-item">
+        <h2>{{ section.settings.stat_4_num }}</h2>
+        <span>{{ section.settings.stat_4_label }}</span>
+      </div>
+    </div>
+
+    <!-- 3. CORE VALUES -->
+    <section class="values-section">
+      <h2 class="section-title">{{ section.settings.values_title }}</h2>
+      <div class="values-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'value_card' %}
+            <div class="value-card" {{ block.shopify_attributes }}>
+              <div class="icon-box">
+                {% case block.settings.icon %}
+                  {% when 'gem' %}
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="6 3 18 3 22 9 12 22 2 9 6 3"></polygon></svg>
+                  {% when 'craft' %}
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
+                  {% when 'shipping' %}
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="2"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                  {% else %}
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                {% endcase %}
+              </div>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- 4. STORY ROWS -->
+    <section class="story-row">
+      <div class="story-img">
+        {% if section.settings.story_1_image != blank %}
+          <img src="{{ section.settings.story_1_image | image_url: width: 1200 }}" alt="{{ section.settings.story_1_title | escape }}" loading="lazy" width="1200" height="800">
+        {% else %}
+          <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=1200" alt="Atelier Crafting" loading="lazy" width="1200" height="800">
+        {% endif %}
+      </div>
+      <div class="story-text">
+        <span class="story-badge">HERITAGE</span>
+        <h2>{{ section.settings.story_1_title }}</h2>
+        <p>{{ section.settings.story_1_text }}</p>
+      </div>
+    </section>
+
+    <section class="story-row reverse">
+      <div class="story-img">
+        {% if section.settings.story_2_image != blank %}
+          <img src="{{ section.settings.story_2_image | image_url: width: 1200 }}" alt="{{ section.settings.story_2_title | escape }}" loading="lazy" width="1200" height="800">
+        {% else %}
+          <img src="https://images.unsplash.com/photo-1611591475140-be38b638eae1?q=80&w=1200" alt="Sustainable Luxury" loading="lazy" width="1200" height="800">
+        {% endif %}
+      </div>
+      <div class="story-text">
+        <span class="story-badge">SUSTAINABILITY</span>
+        <h2>{{ section.settings.story_2_title }}</h2>
+        <p>{{ section.settings.story_2_text }}</p>
+      </div>
+    </section>
+
+    <!-- 5. CTA BANNER -->
+    <section class="about-cta">
+      <h2>{{ section.settings.cta_title }}</h2>
+      <p>{{ section.settings.cta_subtitle }}</p>
+      <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="btn">{{ section.settings.cta_btn_text }}</a>
+    </section>
+
+  </div>
+</section>
+
+<style>
+  #About-{{ section.id }},
+  #About-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .about-wrapper {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+    padding-bottom: 100px;
+    padding-top: 60px;
+  }
+
+  .about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .about-subheading {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #888888;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  /* 1. HERO SECTION */
+  .about-hero {
+    display: flex;
+    align-items: center;
+    padding: 60px 0 100px;
+    gap: 60px;
+  }
+
+  .hero-content { flex: 1.2; }
+  .hero-image { flex: 0.8; position: relative; }
+
+  .hero-content h1 {
+    font-size: clamp(36px, 6vw, 70px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+    color: #ffffff;
+  }
+
+  .hero-content p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #a3a3a3;
+    margin-bottom: 40px;
+    max-width: 520px;
+    font-weight: 300;
+  }
+
+  .hero-image img {
+    width: 100%;
+    border-radius: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    transition: all 0.5s ease;
+    display: block;
+  }
+
+  .hero-image:hover img {
+    transform: translate(-6px, -6px);
+    border-color: #e50914;
+    box-shadow: 0 30px 60px rgba(229, 9, 20, 0.2);
+  }
+
+  /* 2. STATS BAR */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: #141414;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    margin: 0 auto 100px;
+    padding: 40px;
+    border-radius: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+  }
+
+  .stat-item h2 {
+    font-size: 40px;
+    margin: 0 0 6px 0;
+    font-weight: 300;
+    color: #ffffff;
+    letter-spacing: -1px;
+  }
+
+  .stat-item span {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #888888;
+  }
+
+  /* 3. CORE VALUES */
+  .values-section {
+    margin-bottom: 120px;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 300;
+    margin-bottom: 60px;
+    letter-spacing: 1px;
+    color: #ffffff;
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+
+  .value-card {
+    background: #141414;
+    color: #ffffff;
+    padding: 50px 32px;
+    border-radius: 32px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .value-card:hover {
+    transform: translateY(-8px);
+    border-color: #e50914;
+    box-shadow: 0 20px 40px -15px rgba(229, 9, 20, 0.2);
+  }
+
+  .value-card .icon-box {
+    width: 64px;
+    height: 64px;
+    background: #1f1f1f;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .value-card:hover .icon-box {
+    background: #e50914;
+    color: #ffffff;
+    transform: scale(1.1) rotate(-4deg);
+  }
+
+  .value-card h3 {
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .value-card p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #a3a3a3;
+    margin: 0;
+    font-weight: 300;
+  }
+
+  /* 4. STORY ROWS */
+  .story-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 120px;
+    gap: 70px;
+  }
+
+  .story-row.reverse { flex-direction: row-reverse; }
+
+  .story-text { flex: 1; }
+  .story-img { flex: 1; }
+
+  .story-img img {
+    width: 100%;
+    border-radius: 32px;
+    display: block;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .story-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    color: #e50914;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .story-text h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    font-weight: 300;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+  }
+
+  .story-text p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #a3a3a3;
+    font-weight: 300;
+  }
+
+  /* 5. CTA BANNER */
+  .about-cta {
+    background: #141414;
+    padding: 80px 40px;
+    border-radius: 40px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-cta h2 {
+    font-size: clamp(28px, 4vw, 44px);
+    margin-bottom: 16px;
+    color: #ffffff;
+    font-weight: 300;
+  }
+
+  .about-cta p {
+    margin-bottom: 36px;
+    color: #a3a3a3;
+    font-size: 1.05rem;
+    font-weight: 300;
+  }
+
+  .about-cta .btn {
+    display: inline-block;
+    padding: 18px 48px;
+    background: #e50914;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .about-cta .btn:hover {
+    background: #ffffff;
+    color: #0a0a0a;
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+  }
+
+  /* RESPONSIVE FIXES */
+  @media (max-width: 990px) {
+    .about-hero {
+      flex-direction: column;
+      text-align: center;
+      padding: 40px 0 60px;
+    }
+    .hero-content p { margin: 0 auto 30px; }
+
+    .stats-bar {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      margin-bottom: 80px;
+      padding: 30px 20px;
+    }
+
+    .story-row, .story-row.reverse {
+      flex-direction: column;
+      gap: 40px;
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .values-grid { grid-template-columns: 1fr; }
+
+    .about-cta { padding: 50px 24px; }
+  }
+
+  @media (max-width: 480px) {
+    .stat-item h2 { font-size: 30px; }
+    .stat-item span { font-size: 9px; letter-spacing: 2px; }
+    .value-card { padding: 40px 20px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Luxury Accessories About",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Settings"
+    },
+    {
+      "type": "text",
+      "id": "hero_subheading",
+      "label": "Hero Subheading",
+      "default": "THE ART OF ADORNMENT"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero Title",
+      "default": "Timeless Elegance & Modern Craft"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_text",
+      "label": "Hero Description",
+      "default": "We don't just create accessories; we sculpt statement pieces. Certified ethical precious metals meet contemporary designs."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "header",
+      "content": "Stats Bar Settings"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_num",
+      "label": "Stat 1 Number",
+      "default": "15K+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 Label",
+      "default": "Happy Clients"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_num",
+      "label": "Stat 2 Number",
+      "default": "50+"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 Label",
+      "default": "Countries"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_num",
+      "label": "Stat 3 Number",
+      "default": "100%"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 Label",
+      "default": "Certified Gold/Silver"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_num",
+      "label": "Stat 4 Number",
+      "default": "Lifetime"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_label",
+      "label": "Stat 4 Label",
+      "default": "Care Guarantee"
+    },
+    {
+      "type": "header",
+      "content": "Values Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "values_title",
+      "label": "Values Section Title",
+      "default": "WHY WE ARE DIFFERENT"
+    },
+    {
+      "type": "header",
+      "content": "Story Row 1 Settings"
+    },
+    {
+      "type": "text",
+      "id": "story_1_title",
+      "label": "Story 1 Title",
+      "default": "The Atelier Spirit"
+    },
+    {
+      "type": "textarea",
+      "id": "story_1_text",
+      "label": "Story 1 Text",
+      "default": "Our journey began in a boutique workshop with a passion for intricate detail. Today, every gemstone is hand-selected and every metal polished to perfection."
+    },
+    {
+      "type": "image_picker",
+      "id": "story_1_image",
+      "label": "Story 1 Image"
+    },
+    {
+      "type": "header",
+      "content": "Story Row 2 Settings"
+    },
+    {
+      "type": "text",
+      "id": "story_2_title",
+      "label": "Story 2 Title",
+      "default": "Sustainable Innovation"
+    },
+    {
+      "type": "textarea",
+      "id": "story_2_text",
+      "label": "Story 2 Text",
+      "default": "We believe luxury shouldn't cost the Earth. We use 100% recycled precious metals and eco-conscious signature packaging."
+    },
+    {
+      "type": "image_picker",
+      "id": "story_2_image",
+      "label": "Story 2 Image"
+    },
+    {
+      "type": "header",
+      "content": "CTA Banner Settings"
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "CTA Title",
+      "default": "Ready to elevate your collection?"
+    },
+    {
+      "type": "text",
+      "id": "cta_subtitle",
+      "label": "CTA Subtitle",
+      "default": "Explore our handcrafted pieces and discover timeless elegance."
+    },
+    {
+      "type": "text",
+      "id": "cta_btn_text",
+      "label": "Button Label",
+      "default": "Shop The Collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value_card",
+      "name": "Value Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Select Icon",
+          "options": [
+            { "value": "gem", "label": "Diamond / Gem" },
+            { "value": "craft", "label": "Sparkles / Craft" },
+            { "value": "shipping", "label": "Express Shipping" },
+            { "value": "star", "label": "Star / Quality" }
+          ],
+          "default": "gem"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Ethical Sourcing"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Every gem in our collection is ethically sourced from conflict-free certified suppliers."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Accessories About",
+      "blocks": [
+        {
+          "type": "value_card",
+          "settings": {
+            "icon": "gem",
+            "title": "Ethical Sourcing",
+            "text": "Every gem in our collection is ethically sourced from conflict-free certified suppliers."
+          }
+        },
+        {
+          "type": "value_card",
+          "settings": {
+            "icon": "craft",
+            "title": "Master Artisans",
+            "text": "Hand-carved and finished with rigorous zero-defect quality control."
+          }
+        },
+        {
+          "type": "value_card",
+          "settings": {
+            "icon": "shipping",
+            "title": "Insured Express",
+            "text": "Worldwide insured express delivery on all orders with real-time tracking."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

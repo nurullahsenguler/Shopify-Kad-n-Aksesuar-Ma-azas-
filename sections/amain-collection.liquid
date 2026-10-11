@@ -1,0 +1,529 @@
+{% comment %}
+  Luxury Dark Accessories Main Collection Section (Mobile 2-Column Grid)
+{% endcomment %}
+
+<section class="collection-section" id="CollectionSection-{{ section.id }}">
+  <div class="collection-container">
+    
+    <!-- 1. KOLEKSİYON HEADER / BANNER -->
+    <div class="collection-header text-center">
+      <span class="collection-badge">EXCLUSIVE COLLECTION</span>
+      <h1 class="collection-title">{{ collection.title }}</h1>
+      {% if collection.description != blank %}
+        <div class="collection-description">
+          {{ collection.description }}
+        </div>
+      {% endif %}
+    </div>
+
+    {% paginate collection.products by section.settings.products_per_page %}
+      
+      <!-- 2. FİLTRE & SIRALAMA BARI -->
+      <div class="collection-toolbar">
+        <div class="product-count">
+          Showing <span>{{ collection.products_count }}</span> pieces
+        </div>
+
+        <div class="sort-wrapper">
+          <label for="SortBy">Sort By:</label>
+          <select name="sort_by" id="SortBy" class="sort-select" onchange="location = this.value;">
+            {% for option in collection.sort_options %}
+              <option value="{{ collection.url }}?sort_by={{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+                {{ option.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <!-- 3. ÜRÜN GRID'İ -->
+      {% if collection.products.size > 0 %}
+        <div class="collection-grid">
+          {% for product in collection.products %}
+            <div class="product-card">
+              <a href="{{ product.url }}" class="product-card-link">
+                
+                <!-- Görsel & Rozet -->
+                <div class="product-media">
+                  {% if product.featured_media %}
+                    <img
+                      src="{{ product.featured_media | image_url: width: 600 }}"
+                      alt="{{ product.title | escape }}"
+                      loading="lazy"
+                      width="600"
+                      height="800"
+                      class="primary-image"
+                    >
+                    {% if product.media[1] != blank %}
+                      <img
+                        src="{{ product.media[1] | image_url: width: 600 }}"
+                        alt="{{ product.title | escape }}"
+                        loading="lazy"
+                        width="600"
+                        height="800"
+                        class="secondary-image"
+                      >
+                    {% endif %}
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+
+                  {% unless product.available %}
+                    <span class="badge sold-out">Sold Out</span>
+                  {% else %}
+                    {% if product.compare_at_price > product.price %}
+                      <span class="badge sale">Sale</span>
+                    {% endif %}
+                  {% endunless %}
+                </div>
+
+                <!-- Bilgiler -->
+                <div class="product-info">
+                  <h3 class="product-title">{{ product.title }}</h3>
+                  
+                  <div class="product-price">
+                    {% if product.compare_at_price > product.price %}
+                      <span class="price-compare">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                    <span class="price-main">{{ product.price | money }}</span>
+                  </div>
+                </div>
+
+              </a>
+
+              <!-- Hızlı Ekle / İncele Butonu -->
+              <div class="product-card-action">
+                <a href="{{ product.url }}" class="btn-quick-view">VIEW DETAILS</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- 4. PAGINATION -->
+        {% if paginate.pages > 1 %}
+          <div class="pagination-wrapper">
+            {{ paginate | default_pagination }}
+          </div>
+        {% endif %}
+
+      {% else %}
+        <!-- BOŞ KOLEKSİYON EKRANI -->
+        <div class="collection-empty">
+          <h2>No Products Found</h2>
+          <p>There are currently no items available in this collection.</p>
+          <a href="/collections/all" class="btn-browse-all">Browse All Products</a>
+        </div>
+      {% endif %}
+
+    {% endpaginate %}
+
+  </div>
+</section>
+
+<style>
+  #CollectionSection-{{ section.id }},
+  #CollectionSection-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .collection-section {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    padding: 120px 24px 100px;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 85vh;
+  }
+
+  .collection-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .collection-header {
+    margin-bottom: 50px;
+    text-align: center;
+  }
+
+  .collection-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: #e50914;
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .collection-title {
+    font-size: clamp(32px, 5vw, 54px);
+    font-weight: 300;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .collection-description {
+    max-width: 600px;
+    margin: 0 auto;
+    color: #a3a3a3;
+    font-size: 1rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* TOOLBAR */
+  .collection-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 16px 24px;
+    margin-bottom: 40px;
+  }
+
+  .product-count {
+    font-size: 0.9rem;
+    color: #888888;
+    font-weight: 300;
+  }
+
+  .product-count span {
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  .sort-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: #a3a3a3;
+  }
+
+  .sort-select {
+    background: #0a0a0a;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .sort-select:focus {
+    border-color: #e50914;
+  }
+
+  /* GRID & CARDS */
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  .product-card {
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card:hover {
+    transform: translateY(-8px);
+    border-color: #e50914;
+    box-shadow: 0 20px 40px -15px rgba(229, 9, 20, 0.2);
+  }
+
+  .product-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .product-media {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #0a0a0a;
+    margin-bottom: 20px;
+  }
+
+  .product-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.4s ease, transform 0.5s ease;
+  }
+
+  .product-media .secondary-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+
+  .product-card:hover .product-media .secondary-image {
+    opacity: 1;
+  }
+
+  .product-card:hover .product-media img {
+    transform: scale(1.04);
+  }
+
+  /* BADGES */
+  .badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+
+  .badge.sale {
+    background: #e50914;
+    color: #ffffff;
+  }
+
+  .badge.sold-out {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    backdrop-filter: blur(5px);
+  }
+
+  /* INFO */
+  .product-info {
+    text-align: left;
+    margin-bottom: 16px;
+  }
+
+  .product-title {
+    font-size: 1.05rem;
+    font-weight: 400;
+    margin: 0 0 8px 0;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+    transition: color 0.2s ease;
+  }
+
+  .product-card:hover .product-title {
+    color: #e50914;
+  }
+
+  .product-price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+  }
+
+  .price-main {
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  .price-compare {
+    color: #666666;
+    text-decoration: line-through;
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+
+  /* BUTTON */
+  .btn-quick-view {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    background: #0a0a0a;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+  }
+
+  .product-card:hover .btn-quick-view {
+    background: #e50914;
+    border-color: #e50914;
+    color: #ffffff;
+  }
+
+  /* PAGINATION */
+  .pagination-wrapper {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .pagination-wrapper .page,
+  .pagination-wrapper .next,
+  .pagination-wrapper .prev {
+    display: inline-block;
+    padding: 10px 18px;
+    margin: 0 4px;
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+
+  .pagination-wrapper .current {
+    display: inline-block;
+    padding: 10px 18px;
+    margin: 0 4px;
+    background: #e50914;
+    border-radius: 12px;
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  /* EMPTY STATE */
+  .collection-empty {
+    text-align: center;
+    padding: 80px 20px;
+    background: #141414;
+    border-radius: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .collection-empty h2 {
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin-bottom: 12px;
+  }
+
+  .collection-empty p {
+    color: #a3a3a3;
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+
+  .btn-browse-all {
+    display: inline-block;
+    padding: 14px 32px;
+    background: #e50914;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* =========================
+     RESPONSIVE (MASAÜSTÜ KORUNDU, MOBİL İKİŞERLİ YAPILDI)
+     ========================= */
+  @media (max-width: 990px) {
+    .collection-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .collection-section { 
+      padding: 90px 14px 60px; 
+    }
+    
+    .collection-grid { 
+      grid-template-columns: repeat(2, 1fr); /* Mobilde yan yana 2 sütun */
+      gap: 12px; 
+    }
+
+    .product-card {
+      padding: 12px;
+      border-radius: 18px;
+    }
+
+    .product-media {
+      margin-bottom: 12px;
+      border-radius: 14px;
+    }
+
+    .product-title {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .product-price {
+      font-size: 0.85rem;
+      gap: 6px;
+    }
+
+    .price-compare {
+      font-size: 0.78rem;
+    }
+
+    .btn-quick-view {
+      padding: 8px;
+      font-size: 0.68rem;
+      letter-spacing: 1px;
+      border-radius: 10px;
+    }
+
+    .collection-toolbar { 
+      flex-direction: column; 
+      gap: 12px; 
+      align-items: flex-start; 
+      padding: 14px 18px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Luxury Collection",
+  "class": "section-main-collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 36,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Desktop Columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Collection"
+    }
+  ]
+}
+{% endschema %}

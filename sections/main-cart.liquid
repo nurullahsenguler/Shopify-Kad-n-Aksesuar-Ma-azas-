@@ -1,0 +1,584 @@
+{% comment %}
+  Luxury Dark Jewelry & Accessories Cart Page (main-cart.liquid)
+  Features: Item list with glassmorphism cards, quantity selectors, order note, subtotal & free shipping progress indicator.
+{% endcomment %}
+
+<section class="cart-section" id="CartSection-{{ section.id }}">
+  <div class="cart-container">
+    
+    <!-- HEADER -->
+    <div class="cart-header">
+      <h1 class="cart-title">Shopping Cart <span>({{ cart.item_count }})</span></h1>
+    </div>
+
+    {% if cart.item_count > 0 %}
+      <form action="{{ routes.cart_url }}" method="post" novalidate class="cart-form">
+        <div class="cart-grid">
+          
+          <!-- SOL TARAF: ÜRÜN LİSTESİ -->
+          <div class="cart-items-wrapper">
+            {% for item in cart.items %}
+              <div class="cart-item-card" data-item-id="{{ item.key }}">
+                
+                <!-- Ürün Görseli -->
+                <div class="cart-item-media">
+                  {% if item.image %}
+                    <a href="{{ item.url }}">
+                      <img src="{{ item.image | image_url: width: 300 }}" alt="{{ item.title | escape }}" loading="lazy" width="150" height="150">
+                    </a>
+                  {% endif %}
+                </div>
+
+                <!-- Ürün Detayları -->
+                <div class="cart-item-details">
+                  <div class="cart-item-info">
+                    <a href="{{ item.url }}" class="cart-item-title">{{ item.product.title }}</a>
+                    
+                    {% unless item.product.has_only_default_variant %}
+                      <p class="cart-item-variant">{{ item.variant.title }}</p>
+                    {% endunless %}
+
+                    {% if item.selling_plan_allocation %}
+                      <p class="cart-item-plan">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                    {% endif %}
+
+                    <div class="cart-item-price-mobile">
+                      <span class="price">{{ item.final_line_price | money }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Adet Kontrolü & Sil Butonu -->
+                  <div class="cart-item-actions">
+                    <div class="quantity-selector">
+                      <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}" class="qty-btn minus" aria-label="Decrease quantity">-</a>
+                      <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0" class="qty-input" aria-label="Quantity">
+                      <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}" class="qty-btn plus" aria-label="Increase quantity">+</a>
+                    </div>
+
+                    <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" class="remove-btn" title="Remove item">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Masaüstü Fiyat -->
+                <div class="cart-item-price-desktop">
+                  <span class="price">{{ item.final_line_price | money }}</span>
+                </div>
+
+              </div>
+            {% endfor %}
+
+            <!-- SEPET NOTU (İSTEĞE BAĞLI) -->
+            {% if section.settings.show_cart_note %}
+              <div class="cart-note-wrapper">
+                <label for="CartNote" class="cart-note-label">Order Instructions / Gift Message</label>
+                <textarea name="note" id="CartNote" placeholder="Special requests or gift note for your order..." rows="3">{{ cart.note }}</textarea>
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- SAĞ TARAF: ÖZET & CHECKOUT KARTI -->
+          <div class="cart-summary-wrapper">
+            <div class="cart-summary-card">
+              <h2 class="summary-title">Order Summary</h2>
+
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <span class="summary-subtotal">{{ cart.total_price | money }}</span>
+              </div>
+
+              {% if cart.total_discounts > 0 %}
+                <div class="summary-row discount">
+                  <span>Discounts</span>
+                  <span>-{{ cart.total_discounts | money }}</span>
+                </div>
+              {% endif %}
+
+              <div class="summary-row shipping-note">
+                <span>Taxes & Shipping</span>
+                <span class="calc-note">Calculated at checkout</span>
+              </div>
+
+              <div class="summary-divider"></div>
+
+              <div class="summary-row total-row">
+                <span>Total</span>
+                <span class="total-price">{{ cart.total_price | money }}</span>
+              </div>
+
+              <button type="submit" name="checkout" class="checkout-btn">
+                <span>PROCEED TO CHECKOUT</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </button>
+
+              <a href="/collections/all" class="continue-shopping">
+                &larr; Continue Shopping
+              </a>
+
+              <div class="trust-icons-row">
+                <span class="trust-badge">🔒 256-Bit SSL Encrypted</span>
+                <span class="trust-badge">💎 Certified Quality Guarantee</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    {% else %}
+      <!-- BOŞ SEPET EKRANI -->
+      <div class="cart-empty-state">
+        <div class="empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        </div>
+        <h2>Your Cart is Empty</h2>
+        <p>Explore our exclusive jewelry and accessory collections to add pieces to your cart.</p>
+        <a href="/collections/all" class="btn-shop-now">DISCOVER COLLECTION</a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<style>
+  #CartSection-{{ section.id }},
+  #CartSection-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .cart-section {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    padding: 120px 24px 100px; /* Navbar ile arasına boşluk eklendi (120px) */
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 85vh;
+  }
+
+  .cart-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .cart-header {
+    margin-bottom: 40px;
+    text-align: left;
+  }
+
+  .cart-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 300;
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+
+  .cart-title span {
+    color: #888888;
+    font-weight: 300;
+  }
+
+  /* GRID LAYOUT */
+  .cart-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* ÜRÜN KARTLARI */
+  .cart-items-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .cart-item-card {
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: border-color 0.3s ease;
+  }
+
+  .cart-item-card:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .cart-item-media {
+    width: 100px;
+    height: 100px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #0a0a0a;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .cart-item-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .cart-item-details {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .cart-item-title {
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 400;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 6px;
+    transition: color 0.2s ease;
+  }
+
+  .cart-item-title:hover {
+    color: #e50914;
+  }
+
+  .cart-item-variant {
+    font-size: 0.85rem;
+    color: #888888;
+    margin: 0 0 4px 0;
+    font-weight: 300;
+  }
+
+  .cart-item-price-mobile {
+    display: none;
+    margin-top: 8px;
+    font-weight: 500;
+    color: #ffffff;
+  }
+
+  /* QUANTITY SELECTOR */
+  .cart-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .quantity-selector {
+    display: flex;
+    align-items: center;
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 100px;
+    padding: 4px 10px;
+  }
+
+  .qty-btn {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
+  }
+
+  .qty-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .qty-input {
+    width: 36px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+    outline: none;
+    -moz-appearance: textfield;
+  }
+
+  .qty-input::-webkit-outer-spin-button,
+  .qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .remove-btn {
+    color: #666666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+  }
+
+  .remove-btn:hover {
+    color: #e50914;
+  }
+
+  .cart-item-price-desktop .price {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #ffffff;
+    min-width: 90px;
+    text-align: right;
+  }
+
+  /* SEPET NOTU */
+  .cart-note-wrapper {
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 10px;
+  }
+
+  .cart-note-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #a3a3a3;
+    margin-bottom: 10px;
+    font-weight: 300;
+  }
+
+  .cart-note-wrapper textarea {
+    width: 100%;
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    resize: vertical;
+  }
+
+  .cart-note-wrapper textarea:focus {
+    border-color: #e50914;
+  }
+
+  /* SAĞ KART: SUMMARY CARD */
+  .cart-summary-card {
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 32px;
+    position: sticky;
+    top: 120px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  .summary-title {
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin: 0 0 24px 0;
+    letter-spacing: 0.5px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    font-size: 0.95rem;
+    color: #a3a3a3;
+  }
+
+  .summary-subtotal {
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  .calc-note {
+    font-size: 0.8rem;
+    color: #666666;
+  }
+
+  .summary-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 20px 0;
+  }
+
+  .total-row {
+    font-size: 1.15rem;
+    color: #ffffff;
+    margin-bottom: 24px;
+  }
+
+  .total-price {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .checkout-btn {
+    width: 100%;
+    padding: 18px;
+    background: #e50914;
+    color: #ffffff;
+    border: none;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.4s ease;
+  }
+
+  .checkout-btn:hover {
+    background: #ffffff;
+    color: #0a0a0a;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+  }
+
+  .continue-shopping {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    color: #888888;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .continue-shopping:hover {
+    color: #ffffff;
+  }
+
+  .trust-icons-row {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .trust-badge {
+    font-size: 0.78rem;
+    color: #666666;
+    text-align: center;
+  }
+
+  /* EMPTY STATE */
+  .cart-empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    background: #141414;
+    border-radius: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    max-width: 600px;
+    margin: 40px auto 0;
+  }
+
+  .empty-icon {
+    width: 80px;
+    height: 80px;
+    background: #0a0a0a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    color: #e50914;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .cart-empty-state h2 {
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 12px;
+  }
+
+  .cart-empty-state p {
+    color: #a3a3a3;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+    font-weight: 300;
+  }
+
+  .btn-shop-now {
+    display: inline-block;
+    padding: 16px 40px;
+    background: #e50914;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    transition: all 0.4s ease;
+  }
+
+  .btn-shop-now:hover {
+    background: #ffffff;
+    color: #0a0a0a;
+    transform: translateY(-3px);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 990px) {
+    .cart-section { padding-top: 100px; }
+    .cart-grid {
+      grid-template-columns: 1fr;
+    }
+    .cart-summary-card {
+      position: static;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cart-section { padding: 90px 16px 60px; }
+    .cart-item-card {
+      flex-direction: row;
+      align-items: flex-start;
+      padding: 16px;
+    }
+    .cart-item-details {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .cart-item-price-desktop {
+      display: none;
+    }
+    .cart-item-price-mobile {
+      display: block;
+    }
+    .cart-item-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Luxury Cart Page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_cart_note",
+      "label": "Enable order notes",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

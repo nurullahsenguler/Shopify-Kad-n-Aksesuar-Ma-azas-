@@ -1,0 +1,576 @@
+{% comment %}
+  Luxury SaaS-Style VIP Testimonials / Client Reviews Section (Mobile Centered)
+{% endcomment %}
+
+<section class="testimonials-section" id="Testimonials-{{ section.id }}">
+  <div class="testi-container">
+    
+    <!-- HEADER AREA -->
+    <div class="testi-header">
+      {% if section.settings.subheading != blank %}
+        <span class="testi-subheading">{{ section.settings.subheading }}</span>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="testi-title">{{ section.settings.title }}</h2>
+      {% endif %}
+    </div>
+
+    <!-- REVIEWS GRID -->
+    <div class="testi-grid">
+      {% for block in section.blocks %}
+        <div class="testi-card" {{ block.shopify_attributes }}>
+          
+          <!-- STAR RATING -->
+          <div class="testi-stars">
+            {% assign rating = block.settings.rating | default: 5 %}
+            {% for i in (1..rating) %}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="star-icon">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            {% endfor %}
+          </div>
+
+          <!-- QUOTE TEXT -->
+          {% if block.settings.quote != blank %}
+            <p class="testi-quote">“{{ block.settings.quote }}”</p>
+          {% endif %}
+
+          <!-- AUTHOR FOOTER -->
+          <div class="testi-author">
+            {% if block.settings.avatar != blank %}
+              <img 
+                src="{{ block.settings.avatar | image_url: width: 120 }}" 
+                alt="{{ block.settings.author_name }}" 
+                class="author-avatar"
+                loading="lazy"
+                width="48"
+                height="48"
+              >
+            {% else %}
+              <div class="author-avatar-placeholder">
+                {{ block.settings.author_name | slice: 0 | upcase }}
+              </div>
+            {% endif %}
+
+            <div class="author-info">
+              <div class="author-name-row">
+                <h3 class="author-name">{{ block.settings.author_name }}</h3>
+                {% if block.settings.verified %}
+                  <span class="verified-badge" title="Verified Buyer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                  </span>
+                {% endif %}
+              </div>
+              <span class="author-title">{{ block.settings.author_title | default: "VIP Member" }}</span>
+            </div>
+          </div>
+
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* --- SCROLL REVEAL ANİMASYONLARI (KARTLAR SIRAYLA) --- */
+  @keyframes testiHeaderSlide {
+    0% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes testiCardSlideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(45px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .testimonials-section .testi-header,
+  .testimonials-section .testi-card {
+    opacity: 0;
+  }
+
+  .testimonials-section.is-in-view .testi-header {
+    animation: testiHeaderSlide 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .testimonials-section.is-in-view .testi-card {
+    animation: testiCardSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Kartların peş peşe yağ gibi akması için gecikmeler (staggered delay) */
+  .testimonials-section.is-in-view .testi-card:nth-child(1) { animation-delay: 0.12s; }
+  .testimonials-section.is-in-view .testi-card:nth-child(2) { animation-delay: 0.25s; }
+  .testimonials-section.is-in-view .testi-card:nth-child(3) { animation-delay: 0.38s; }
+  .testimonials-section.is-in-view .testi-card:nth-child(4) { animation-delay: 0.51s; }
+  .testimonials-section.is-in-view .testi-card:nth-child(5) { animation-delay: 0.64s; }
+  .testimonials-section.is-in-view .testi-card:nth-child(6) { animation-delay: 0.77s; }
+
+  #Testimonials-{{ section.id }},
+  #Testimonials-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  #Testimonials-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 2rem {{ section.settings.padding_bottom }}px;
+    position: relative;
+    z-index: 14;
+    overflow: hidden !important;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .testi-container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  .testi-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .testi-subheading {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: {{ section.settings.subheading_color }};
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .testi-title {
+    font-size: 2.2rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: {{ section.settings.title_color }};
+    margin: 0;
+  }
+
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: {{ section.settings.grid_gap }}px;
+  }
+
+  /* GLASS TESTIMONIAL CARDS */
+  .testi-card {
+    background: {{ section.settings.card_bg_color }};
+    border: 1px solid {{ section.settings.card_border_color }};
+    border-radius: {{ section.settings.card_border_radius }}px;
+    padding: 36px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .testi-card:hover {
+    transform: translateY(-8px);
+    border-color: {{ section.settings.card_hover_border_color }};
+    box-shadow: 0 20px 40px -15px rgba(229, 9, 20, 0.15);
+  }
+
+  .testi-stars {
+    display: flex;
+    gap: 4px;
+    color: {{ section.settings.star_color }};
+  }
+
+  .testi-quote {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: {{ section.settings.quote_color }};
+    margin: 0;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .author-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .author-avatar-placeholder {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #1f1f1f;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .author-name-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .author-name {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: {{ section.settings.author_name_color }};
+    margin: 0;
+  }
+
+  .verified-badge {
+    color: {{ section.settings.star_color }};
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .author-title {
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: {{ section.settings.subheading_color }};
+  }
+
+  @media (max-width: 1024px) {
+    .testi-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  }
+
+  /* MOBİL DÜZEN VE TAM ORTALAMA */
+  @media (max-width: 600px) {
+    #Testimonials-{{ section.id }} { 
+      padding: 45px 1rem; 
+    }
+
+    .testi-header {
+      margin-bottom: 35px;
+    }
+
+    .testi-title {
+      font-size: 1.75rem;
+    }
+
+    .testi-grid { 
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr); 
+      gap: 20px; 
+    }
+
+    .testi-card { 
+      padding: 28px 20px; 
+      align-items: center;
+      text-align: center;
+    }
+
+    .testi-stars {
+      justify-content: center;
+    }
+
+    .testi-author {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .author-info {
+      align-items: center;
+    }
+
+    .author-name-row {
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const sectionId = '{{ section.id }}';
+    document.addEventListener('DOMContentLoaded', () => {
+      const sectionEl = document.getElementById(`Testimonials-${sectionId}`);
+      if (!sectionEl) return;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            sectionEl.classList.add('is-in-view');
+            observer.unobserve(sectionEl);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      observer.observe(sectionEl);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Testimonials",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Layout & Padding"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 140,
+      "step": 10,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 140,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Headings (English)"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "CLIENT REVIEWS"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#888888"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Main Title",
+      "default": "Loved by Discerning Clients"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Main Title Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Card & Text Styling"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "default": "#141414"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "rgba(255, 255, 255, 0.08)"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_border_color",
+      "label": "Card Hover Border Color",
+      "default": "#e50914"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Rating & Verified Icon Color",
+      "default": "#e50914"
+    },
+    {
+      "type": "color",
+      "id": "quote_color",
+      "label": "Quote Text Color",
+      "default": "#a3a3a3"
+    },
+    {
+      "type": "color",
+      "id": "author_name_color",
+      "label": "Author Name Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Grid Settings"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Desktop Columns",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile Columns",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 12,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Grid Gap",
+      "default": 28
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial Card",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star Rating",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Client Review Quote",
+          "default": "The texture, formulation, and unboxing experience were unmatched. Truly an elevated luxury staple."
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Client Avatar (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Elena Rostova"
+        },
+        {
+          "type": "text",
+          "id": "author_title",
+          "label": "Author Title / Tag",
+          "default": "VIP Collector"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Show Verified Buyer Badge",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Elena Rostova",
+            "author_title": "VIP Collector",
+            "quote": "The formulation quality and subtle fragrance exceed expectations. You feel the luxury in every single detail."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Marcus Vance",
+            "author_title": "Verified Buyer",
+            "quote": "Bespoke gift box packaging and lightning-fast international delivery. Outstanding customer care service."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Sophia Laurent",
+            "author_title": "Regular Client",
+            "quote": "The clean aesthetic and seamless purchasing experience match the timeless elegance of the products."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

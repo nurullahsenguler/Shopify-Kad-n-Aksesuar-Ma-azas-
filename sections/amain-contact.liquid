@@ -1,0 +1,338 @@
+{% comment %}
+  Luxury Dark Jewelry/Accessory Contact Section
+  Readapted layout: Left Info Card -> Right Functional Shopify Contact Form (Mobile Offset Added)
+{% endcomment %}
+
+<section class="contact-section" id="Contact-{{ section.id }}">
+  <div class="contact-container">
+    
+    <!-- SOL TARAF - BİLGİLER -->
+    <div class="contact-info-card">
+      <span class="contact-badge">{{ section.settings.badge_text }}</span>
+      <h2>{{ section.settings.title }}</h2>
+      <p>{{ section.settings.description }}</p>
+
+      <div class="info-list">
+        {% if section.settings.address != blank %}
+          <div class="info-item">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            </div>
+            <span>{{ section.settings.address }}</span>
+          </div>
+        {% endif %}
+
+        {% if section.settings.email != blank %}
+          <div class="info-item">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+            </div>
+            <span>{{ section.settings.email }}</span>
+          </div>
+        {% endif %}
+
+        {% if section.settings.phone != blank %}
+          <div class="info-item">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            </div>
+            <span>{{ section.settings.phone }}</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- SAĞ TARAF - FORM -->
+    <div class="contact-form-card">
+      {% form 'contact' %}
+        {% if form.posted_successfully? %}
+          <div class="form-success">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <span>Thank you! Your message has been received. Our concierge team will reach out shortly.</span>
+          </div>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="form-error">
+            <span>Please check the fields and try submitting again.</span>
+          </div>
+        {% endif %}
+
+        <div class="input-group">
+          <input type="text" name="contact[name]" id="ContactForm-name" placeholder="Full Name" required>
+        </div>
+
+        <div class="input-group">
+          <input type="email" name="contact[email]" id="ContactForm-email" placeholder="Email Address" required>
+        </div>
+
+        <div class="input-group">
+          <textarea name="contact[body]" id="ContactForm-body" rows="4" placeholder="How can our concierge assist you today?" required></textarea>
+        </div>
+
+        <button type="submit" class="send-btn">Send Message</button>
+      {% endform %}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  #Contact-{{ section.id }},
+  #Contact-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .contact-section {
+    background-color: #0a0a0a;
+    padding: 100px 24px;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contact-container {
+    max-width: 1140px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    background: #141414;
+    padding: 60px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  /* SOL TARAF - BİLGİLER */
+  .contact-info-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .contact-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: #e50914;
+    margin-bottom: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .contact-info-card h2 {
+    color: #ffffff;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 300;
+    margin: 0 0 20px 0;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+
+  .contact-info-card p {
+    color: #a3a3a3;
+    font-size: 1rem;
+    margin: 0 0 40px 0;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 300;
+  }
+
+  .info-icon {
+    width: 44px;
+    height: 44px;
+    background: #1f1f1f;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+
+  .info-item:hover .info-icon {
+    background: #e50914;
+    border-color: #e50914;
+    transform: scale(1.05);
+  }
+
+  /* SAĞ TARAF - FORM */
+  .contact-form-card {
+    background: #0a0a0a;
+    padding: 44px;
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .form-success {
+    background: rgba(46, 125, 50, 0.15);
+    color: #81c784;
+    padding: 16px 20px;
+    border-radius: 14px;
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid rgba(129, 199, 132, 0.3);
+  }
+
+  .form-error {
+    background: rgba(211, 47, 47, 0.15);
+    color: #ef5350;
+    padding: 16px 20px;
+    border-radius: 14px;
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+    border: 1px solid rgba(239, 83, 80, 0.3);
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+  }
+
+  .contact-form-card input,
+  .contact-form-card textarea {
+    width: 100%;
+    padding: 18px 22px;
+    background: #141414;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 300;
+  }
+
+  .contact-form-card input::placeholder,
+  .contact-form-card textarea::placeholder {
+    color: #666666;
+  }
+
+  .contact-form-card input:focus,
+  .contact-form-card textarea:focus {
+    border-color: #e50914;
+    background: #1a1a1a;
+    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.15);
+  }
+
+  .send-btn {
+    width: 100%;
+    padding: 18px;
+    background: #e50914;
+    color: #ffffff;
+    border: none;
+    border-radius: 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.4s ease;
+    margin-top: 10px;
+  }
+
+  .send-btn:hover {
+    background: #ffffff;
+    color: #0a0a0a;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+  }
+
+  /* RESPONSIVE & MOBİLDE 15-20PX AŞAĞI İNDİRME */
+  @media (max-width: 990px) {
+    .contact-section { padding: 60px 16px; }
+    .contact-container {
+      grid-template-columns: 1fr;
+      padding: 40px 28px;
+      gap: 40px;
+      border-radius: 32px;
+      margin-top: 18px; /* Mobilde kartı 18px aşağı kaydırdık */
+    }
+    .contact-info-card { text-align: center; align-items: center; }
+    .info-list { align-items: center; }
+    .contact-form-card { padding: 32px 20px; }
+  }
+
+  @media (max-width: 480px) {
+    .contact-container { padding: 28px 18px; margin-top: 18px; }
+    .contact-info-card h2 { font-size: 32px; }
+    .contact-form-card input, .contact-form-card textarea { padding: 15px; }
+    .send-btn { padding: 16px; font-size: 0.85rem; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Luxury Contact Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "CONCIERGE CARE"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Get in Touch"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Have a query regarding our collections or bespoke sizing? Our customer care specialists are at your service 24/7."
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Address",
+      "default": "740 Park Avenue, New York, NY 10021"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "concierge@yourstore.com"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone Number",
+      "default": "+1 (800) 555-LUXURY"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Contact Us"
+    }
+  ]
+}
+{% endschema %}

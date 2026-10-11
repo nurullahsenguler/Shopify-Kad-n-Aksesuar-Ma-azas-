@@ -1,0 +1,184 @@
+{% comment %}
+  Luxury Dark Accessories Search Header Component (Navbar Safe Offset)
+{% endcomment %}
+
+<style>
+  #SearchHeader-{{ section.id }},
+  #SearchHeader-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .modern-search-header {
+    background: #141414; /* Koyu Glass Card Arka Planı */
+    padding: 150px 20px 60px; /* Navbar çakışmasını önlemek için üst boşluk artırıldı */
+    text-align: center;
+    border-radius: 0 0 50px 50px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 10;
+  }
+
+  .search-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .search-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: #e50914;
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .search-wrapper h1 {
+    color: #ffffff;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 300;
+    margin-bottom: 30px;
+    letter-spacing: 0.5px;
+  }
+
+  .search-wrapper h1 span {
+    color: #e50914;
+    font-weight: 400;
+  }
+
+  .search-input-container {
+    position: relative;
+    background: #0a0a0a;
+    padding: 8px 8px 8px 24px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .search-input-container:focus-within {
+    border-color: #e50914;
+    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.2);
+  }
+
+  .search-input-container input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    padding: 12px 10px;
+    font-size: 1.05rem;
+    outline: none;
+    font-weight: 300;
+  }
+
+  .search-input-container input::placeholder {
+    color: #666666;
+  }
+
+  .search-btn {
+    background: #e50914;
+    color: #ffffff;
+    border: none;
+    padding: 16px 36px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .search-btn:hover {
+    background: #ffffff;
+    color: #0a0a0a;
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+  }
+
+  .result-count-badge {
+    display: inline-block;
+    margin-top: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 24px;
+    border-radius: 100px;
+    color: #a3a3a3;
+    font-size: 0.88rem;
+    font-weight: 300;
+    backdrop-filter: blur(5px);
+  }
+
+  .result-count-badge strong {
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  @media (max-width: 600px) {
+    .modern-search-header {
+      padding: 110px 16px 40px; /* Mobilde de navbar payı bırakıldı */
+      border-radius: 0 0 32px 32px;
+    }
+    .search-input-container {
+      padding: 6px 6px 6px 16px;
+    }
+    .search-btn {
+      padding: 12px 20px;
+      font-size: 0.75rem;
+    }
+    .search-input-container input {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+
+<div class="modern-search-header" id="SearchHeader-{{ section.id }}">
+  <div class="search-wrapper">
+    <span class="search-badge">SEARCH STORE</span>
+    
+    <h1>
+      {% if search.performed %}
+        Results for <span>"{{ search.terms | escape }}"</span>
+      {% else %}
+        Find Your Perfect Piece
+      {% endif %}
+    </h1>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-input-container">
+      <input
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="Search rings, necklaces, bracelets..."
+        aria-label="Search"
+      >
+      <button type="submit" class="search-btn">SEARCH</button>
+    </form>
+
+    {% if search.performed %}
+      <div class="result-count-badge">
+        Found <strong>{{ search.results_count }}</strong> items for "<strong>{{ search.terms | escape }}</strong>"
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Modern Search Header",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Modern Search Header"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,342 @@
+{% comment %}
+  Custom Luxury Hero Section - Perfectly Placed Below Navbar
+{% endcomment %}
+
+<div class="custom-hero-master" id="CustomHero-{{ section.id }}">
+  <div class="custom-hero-row">
+    
+    <!-- Sol Kart: Ana Görsel ve Metin (Soldan Giriş) -->
+    <div class="custom-hero-col hero-col-left hero-reveal-left">
+      <div class="hero-inner-card">
+        {% if section.settings.left_image != blank %}
+          <img
+            src="{{ section.settings.left_image | image_url: width: 1200 }}"
+            alt="{{ section.settings.title }}"
+            loading="eager"
+            class="hero-img-bg"
+          >
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg hero-img-bg' }}
+        {% endif %}
+
+        <div class="hero-content-box">
+          {% if section.settings.subtitle != blank %}
+            <span class="hero-subheading hero-text-item item-1">{{ section.settings.subtitle }}</span>
+          {% endif %}
+          <h1 class="hero-heading hero-text-item item-2">{{ section.settings.title }}</h1>
+          {% if section.settings.button_label != blank %}
+            <a href="{{ section.settings.button_link }}" class="hero-cta-button hero-text-item item-3">
+              <span>{{ section.settings.button_label }}</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Sağ Kart: Kemer/Arch Çerçeveli Ürün (Sağdan Giriş) -->
+    <div class="custom-hero-col hero-col-right hero-reveal-right">
+      <div class="hero-inner-card arch-card-bg">
+        <div class="arch-frame-box">
+          {% if section.settings.right_image != blank %}
+            <img
+              src="{{ section.settings.right_image | image_url: width: 800 }}"
+              alt="Featured Product"
+              loading="eager"
+              class="arch-img-fit"
+            >
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg arch-img-fit' }}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* --- GİRİŞ VE YAĞ GİBİ KAYMA ANİMASYONLARI --- */
+  @keyframes heroSlideLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-70px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes heroSlideRight {
+    0% {
+      opacity: 0;
+      transform: translateX(70px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes heroTextSlideDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-25px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-reveal-left {
+    opacity: 0;
+    animation: heroSlideLeft 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.2s;
+  }
+
+  .hero-reveal-right {
+    opacity: 0;
+    animation: heroSlideRight 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.35s;
+  }
+
+  /* Metinlerin yukarıdan aşağıya sırayla (staggered) gelişi */
+  .hero-text-item {
+    opacity: 0;
+    animation: heroTextSlideDown 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-text-item.item-1 { animation-delay: 0.5s; }
+  .hero-text-item.item-2 { animation-delay: 0.65s; }
+  .hero-text-item.item-3 { animation-delay: 0.8s; }
+
+  /* HERO ANA KAPSAYICI */
+  #CustomHero-{{ section.id }} {
+    position: relative !important;
+    width: 100% !important;
+    
+    /* Navbar Yüksekliğine Göre Üstten Boşluk */
+    padding-top: 100px !important; 
+    padding-bottom: 2rem !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    
+    background-color: {{ section.settings.bg_color }};
+    box-sizing: border-box !important;
+  }
+
+  /* YAN YANA İKİ KART YAPISI (FLEXBOX) */
+  .custom-hero-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 1.5rem !important;
+    width: 100% !important;
+    max-width: 1600px !important;
+    height: calc(100vh - 140px) !important;
+    min-height: 500px !important;
+    max-height: 700px !important;
+    margin: 0 auto !important;
+  }
+
+  .custom-hero-col {
+    position: relative !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-col-left {
+    flex: 1.2 !important;
+  }
+
+  .hero-col-right {
+    flex: 0.8 !important;
+  }
+
+  .hero-inner-card {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+  }
+
+  .arch-card-bg {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .hero-img-bg {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .hero-content-box {
+    position: absolute !important;
+    bottom: 3rem !important;
+    left: 3rem !important;
+    right: 3rem !important;
+    z-index: 2 !important;
+    color: #ffffff !important;
+  }
+
+  .hero-subheading {
+    display: block !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 3px !important;
+    text-transform: uppercase !important;
+    margin-bottom: 0.75rem !important;
+    font-weight: 500 !important;
+    opacity: 0.9 !important;
+  }
+
+  .hero-heading {
+    font-size: clamp(2rem, 3.2vw, 3.5rem) !important;
+    font-weight: 300 !important;
+    line-height: 1.1 !important;
+    margin: 0 0 1.5rem 0 !important;
+    color: #ffffff !important;
+  }
+
+  .hero-cta-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding: 0.9rem 2rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    border-radius: 50px !important;
+    backdrop-filter: blur(8px) !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.3s ease !important;
+    font-size: 0.9rem !important;
+  }
+
+  .hero-cta-button:hover {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-color: #ffffff !important;
+  }
+
+  .arch-frame-box {
+    width: 80% !important;
+    max-width: 340px !important;
+    height: 85% !important;
+    max-height: 480px !important;
+    border-radius: 170px 170px 20px 20px !important;
+    overflow: hidden !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .arch-img-fit {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  /* MOBİL & TABLET GÖRÜNÜMÜ */
+  @media (max-width: 850px) {
+    #CustomHero-{{ section.id }} {
+      padding-top: 85px !important;
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+      padding-bottom: 1rem !important;
+    }
+    
+    .custom-hero-row {
+      flex-direction: column !important;
+      height: auto !important;
+      max-height: none !important;
+      gap: 1rem !important;
+    }
+
+    .hero-col-left, .hero-col-right {
+      flex: none !important;
+      width: 100% !important;
+    }
+
+    .hero-col-left {
+      height: 420px !important;
+    }
+
+    .hero-col-right {
+      height: 340px !important;
+    }
+
+    .hero-content-box {
+      bottom: 2rem !important;
+      left: 1.5rem !important;
+      right: 1.5rem !important;
+    }
+
+    .arch-frame-box {
+      width: 75% !important;
+      height: 80% !important;
+      max-height: 280px !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom Luxury Hero",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#fbf9f5"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Left Lifestyle Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Right Arch Product Image"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Fine Jewelry Collection"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Timeless Elegance Redefined"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Explore Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Luxury Hero"
+    }
+  ]
+}
+{% endschema %}
