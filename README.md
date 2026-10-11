@@ -4,7 +4,7 @@ Bu depo, modern aksesuar ve takı sektörü için özel olarak tasarlanmış, y�
 
 ## 🔗 Canlı Mağaza & Demo
 - **URL:** [nurullah-aksesuar.myshopify.com](https://nurullah-aksesuar.myshopify.com/)
-- **Erişim Şifresi:** (Varsa ekleyebilirsin, yoksa bu satırı silebilirsin)
+- **Erişim Şifresi:** (123)
 
 ## ✨ Temel Özellikler ve Geliştirmeler
 - **Özel Liquid Bölümleri:** Esnek ana sayfa ve kategori yönetimi için yeniden kullanılabilir, dinamik ve modüler bölümler tasarlandı.
